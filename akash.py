@@ -20,7 +20,7 @@ def check_version(a:str,b:str):
         fetched = version.get_version(modified)
         data["version"] = fetched
         data["version_satisfied"] = "true" if validate(split_version,fetched) else "false" 
-    pd.to_csv("output.csv")
+    data.to_csv("output.csv")
     print("sucessfully fetched and data stored in output.csv file...")
     
 
@@ -30,8 +30,8 @@ def add_version():
     print("adding new version...")
 
 def modify(a:str):
-    a.replace("https://github.com","https://raw.githubusercontent.com")
-    a +="/main/package-lock.jsonn"
+    a= a.replace("https://github.com","https://raw.githubusercontent.com")
+    a = a + "/main/package-lock.json"
     return a
 
 def validate(a:list,b:str):
