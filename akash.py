@@ -1,3 +1,4 @@
+from struct import pack
 from turtle import shape
 from importlib_metadata import version
 import typer
@@ -12,17 +13,25 @@ app = typer.Typer()
 
 @app.command()
 def check_version(a:str,b:str):
-    split_version = b.split('.')
-    data =pd.read_csv(a)
+    b = b.split('@')
+    pack = b[0]
+    split_version = b[1].split('.')
+    global data 
+    data = pd.read_csv(a)
     link= data["repo"]
-    for i in range(link.shape[0]):
+    version_list = []
+    version_satisfied=[]
+    for i in range(len(link)):
         modified = modify(link[i])
-        fetched = version.get_version(modified)
-        data["version"] = fetched
-        data["version_satisfied"] = "true" if validate(split_version,fetched) else "false" 
-    data.to_csv("output.csv")
+        fetched = version.get_version(pack,modified)
+        version_list.append(fetched)
+        version_satisfied.append("true" if validate(split_version,fetched) else "false")
+    data["version"] = version_list
+    data["version_satisfied"] = version_satisfied
+    data.to_csv("output.csv",index=False)
     print("sucessfully fetched and data stored in output.csv file...")
     
+
 
 
 @app.command()
@@ -35,6 +44,7 @@ def modify(a:str):
     return a
 
 def validate(a:list,b:str):
+    b= b.replace('^',"")
     fetched = b.split('.')
     if(a[0]>fetched[0]):
         return True
