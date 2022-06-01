@@ -14,11 +14,11 @@ def get_version(pack,a:str):
     # print(a,"\n")
     response = requests.get(a)
 
-    print("responce from server is :")
-    print(response.status_code)
+    # print("responce from server is :")
+    # print(response.status_code)
     # data = response.json()
     data = response.json().get('packages')
-    print(type(data))
+    # print(type(data))
     return (data['']['dependencies'][pack])
     # return (data['node_modules/array-flatten']['version'])
 

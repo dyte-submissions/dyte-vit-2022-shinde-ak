@@ -21,11 +21,14 @@ def check_version(a:str,b:str):
     link= data["repo"]
     version_list = []
     version_satisfied=[]
+    print("URL \t \t \t \t \t \t verison \t version_satisfied")
     for i in range(len(link)):
         modified = modify(link[i])
         fetched = version.get_version(pack,modified)
         version_list.append(fetched)
-        version_satisfied.append("true" if validate(split_version,fetched) else "false")
+        flag ="true" if validate(split_version,fetched) else "false"
+        version_satisfied.append(flag)
+        print( link[i] +"\t"+ fetched + "\t \t" + flag)
     data["version"] = version_list
     data["version_satisfied"] = version_satisfied
     data.to_csv("output.csv",index=False)
